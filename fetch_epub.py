@@ -22,10 +22,12 @@ class Book:
         urllib.request.urlretrieve(self.download_url, self.title+'.epub')
         return None
 
-
-
 def fetch_results(search_query):
     base_url = "http://www.feedbooks.com/books/search?query="
+    
+    # format query from "The Great Gatsby" to "The+Great+Gatsby"
+    search_query = search_query.split()
+    search_query = '+'.join(search_query)
 
     r = requests.get(base_url+search_query)
     if r.status_code == requests.codes.ok:
@@ -39,7 +41,7 @@ def fetch_results(search_query):
             author = entry('a', {'class' : 'gray'})[0]
             author = author.string
             
-            # note done
+            # not done
             #description = entry('div', {'class' : 'span-11 prepend-1 append-bottom'})
             #description = description[0].text
             #print(description)
@@ -55,18 +57,24 @@ def fetch_results(search_query):
 
             book_list.append(Book(title, author, 'No description', cover_url,
                 download_url, link))
-
     else:
         print('Error:', r.status_code)
         return None
     return book_list
 
-
-def download_file():
+def download_file(book_to_download):
+    book_to_download.download()
     return None
 
-def present_results():
+def present_results(book_list):
+    for i, book in enumerate(book_list):
+        print(str(i)+'.', "'"+book.title+"'", 'by', book.author)
     return None
 
 if __name__ == '__main__':
     book_list = fetch_results(argv[-1])
+    present_results(book_list)
+
+    download_choice = input('Enter number of file to download\n> ')
+    download_file(book_list[int(download_choice)])
+    print('File finished downloading from Feedbooks.com')
