@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 from sys import argv
-import requests
-import urllib.request
-from bs4 import BeautifulSoup
 import feedbooks as fb
 from books import Book
 
