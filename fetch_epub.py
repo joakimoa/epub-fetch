@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from sys import argv
 import feedbooks as fb
+import gutenberg as gp
 from books import Book
 
 def create_objects(book_data_list):
@@ -27,7 +28,7 @@ def present_results(book_list):
     return None
 
 if __name__ == '__main__':
-    book_data_list = fb.fetch_results(argv[-1])
+    book_data_list = gp.fetch_results(argv[-1])
     book_list = create_objects(book_data_list)
     present_results(book_list)
     download_choice = input('Enter number of file to download\n> ')
